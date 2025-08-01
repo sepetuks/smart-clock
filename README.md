@@ -1,11 +1,5 @@
-# ESP32 based Smart Clock
-Because I was lazy to set time each time on old clock after power outages (and natural slow deviations).  
-I decided to build "Smarter" clock that would sync time from internet automatically (NTP). With a posibility to add something more on it in future.
-![Old clock](/Photos/OldClock.jpg "Old Clock")
 
-As I run HomeAssitant I wanted something compatible with it and not too much complicated.
-
-- [ESP32 based Smart Clock](#esp32-based-smart-clock)
+- [WHY?](#why)
   - [Hardware](#hardware)
   - [ESPhome](#esphome)
     - [Bus, GPIOs, Pins](#bus-gpios-pins)
@@ -20,7 +14,22 @@ As I run HomeAssitant I wanted something compatible with it and not too much com
     - [Home Assistant](#home-assistant)
     - [Photos](#photos)
   - [3D File](#3d-file)
-  - [ToDo](#todo)
+  - [To Do (maybe in future)](#to-do-maybe-in-future)
+
+# WHY?
+
+Because I was lazy to set time each time on old clock after power outages (and natural slow deviations).
+
+I decided to build "Smarter" clock that would sync time from internet automatically (NTP). With a posibility to add something more on it in future.
+
+As I run HomeAssitant at home I wanted something compatible with it and not "too much" complicated.
+
+Before:
+![Old clock](/Photos/OldClock.jpg "Old Clock")
+
+After:
+![Clock](/Photos/alone.jpg "Clock")
+
 
 
 ## Hardware
@@ -44,7 +53,7 @@ Initialization of values and boot (because I can :-)) screen:
   name: hnr-clock
   friendly_name: hnr-clock
   on_boot:
-    - delay: 4s
+    - delay: 5s
     - lvgl.widget.hide: boot_screen # hide boot screen
     - lvgl.page.show:
         id: clock_page
@@ -136,7 +145,6 @@ switch:
     entity_category: "config"
     turn_on_action:
       - lambda: |-
-          //lv_obj_remove_style_all(id(clock_label));
           lv_obj_add_style(id(clock_label), id(time_style_night), LV_PART_MAIN);
       - light.turn_on: 
           id: backlight
@@ -144,7 +152,6 @@ switch:
           transition_length: 3s
     turn_off_action:
       - lambda: |-
-          //lv_obj_remove_style_all(id(clock_label));
           lv_obj_add_style(id(clock_label), id(time_style), LV_PART_MAIN);
       - light.turn_on: 
           id: backlight
@@ -214,8 +221,6 @@ time:
 
 ### TouchScreen
 
-I implemented stop antiburn action when screen gets a touch action (just in case I need to see time when it is in `antiburn` mode).
-
 ```YAML
 touchscreen:
   - id: main_touchscreen
@@ -234,8 +239,6 @@ touchscreen:
     transform:
       mirror_y: false
       swap_xy: true
-    on_touch:
-      - switch.turn_off: switch_antiburn
 ```
 
 #### Images, Colors, Fonts
@@ -249,7 +252,7 @@ My defined style elements:
 image:
   - file: Images/hnr_logo.png
     id: boot_logo
-    resize: 300x300
+    resize: 320x320
     type: RGB565
     transparency: alpha_channel
 
@@ -313,6 +316,7 @@ font:
 1. I wanted to use was styles, this allows better control of style used (easy to change)
 2. I wanted to use LVGL pages, as it makes easy in future to define additional page and even switch between them
 3. I found grid style organization fits me best. Main page was designe to have more grids just in case I want to display more icons there (future use). For curent setup it would have been enough to use one collumn.
+4. I implemented stop antiburn action when screen gets a `on_press` action (just in case I need to see time when it is in `antiburn` mode).
 
 ```YAML
 lvgl:
@@ -332,35 +336,6 @@ lvgl:
       text_color: my_green
       text_font: roboto
   pages:
-    - id: boot_page
-      widgets:
-        - obj:
-            id: boot_screen
-            x: 0
-            y: 0
-            width: 100%
-            height: 100%
-            bg_color: 0x000000
-            bg_opa: COVER
-            radius: 0
-            pad_all: 0
-            border_width: 0
-            widgets:
-              - image:
-                  align: CENTER
-                  src: boot_logo
-              - spinner:
-                  align: CENTER
-                  height: 50
-                  width: 50
-                  spin_time: 1s
-                  arc_length: 60deg
-                  arc_width: 8
-                  indicator:
-                    arc_color: 0x18bcf2
-                    arc_width: 8
-            on_press:
-              - lvgl.widget.hide: boot_screen 
     - id: clock_page 
       bg_color: 0x000000 
       widgets:
@@ -415,7 +390,6 @@ lvgl:
                   align: CENTER
                   styles: seconds_style
                   text: "99s"
-              
               - label:
                   id: clock_label_dateofweek
                   grid_cell_column_pos: 1
@@ -429,6 +403,37 @@ lvgl:
                   align: CENTER
                   styles: date_style
                   text: "Sunday"
+            on_press:
+              - switch.turn_off: switch_antiburn
+  top_layer:
+    widgets:
+      - obj:
+          id: boot_screen
+          x: 0
+          y: 0
+          width: 100%
+          height: 100%
+          bg_color: 0x000000
+          bg_opa: COVER
+          radius: 0
+          pad_all: 0
+          border_width: 0
+          widgets:
+            - image:
+                align: CENTER
+                src: boot_logo
+            - spinner:
+                align: CENTER
+                height: 200
+                width: 200
+                spin_time: 1s
+                arc_length: 60deg
+                arc_width: 8
+                indicator:
+                  arc_color: 0x18bcf2
+                  arc_width: 8
+          on_press:
+            - lvgl.widget.hide: boot_screen 
 ```
 
 ### Scripts
@@ -506,7 +511,7 @@ I took it organized a bit (grouped properly) and modified (added holder) to be a
 ![3DView](/3Dprint/3Dview2.png "View2")
 
 
-## ToDo
+## To Do (maybe in future)
 
 - Decide when/if to use `Antiburn` mode
 - Maybe add additional icons that would show HomeAssitant things
