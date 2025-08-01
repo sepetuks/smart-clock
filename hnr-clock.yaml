@@ -92,7 +92,6 @@ switch:
     entity_category: "config"
     turn_on_action:
       - lambda: |-
-          //lv_obj_remove_style_all(id(clock_label));
           lv_obj_add_style(id(clock_label), id(time_style_night), LV_PART_MAIN);
       - light.turn_on: 
           id: backlight
@@ -100,7 +99,6 @@ switch:
           transition_length: 3s
     turn_off_action:
       - lambda: |-
-          //lv_obj_remove_style_all(id(clock_label));
           lv_obj_add_style(id(clock_label), id(time_style), LV_PART_MAIN);
       - light.turn_on: 
           id: backlight
