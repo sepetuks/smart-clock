@@ -18,8 +18,8 @@ As I run HomeAssitant I wanted something compatible with it and not too much com
     - [Scripts](#scripts)
   - [End Result](#end-result)
     - [Home Assistant](#home-assistant)
-  - [3D File](#3d-file)
     - [Photos](#photos)
+  - [3D File](#3d-file)
   - [ToDo](#todo)
 
 
@@ -489,6 +489,12 @@ script:
 - `Antiburn` switch enables antiburn of screen. Still thinking when to use it. Maybe during 3am-5am or when nobody is home (contorlled by HomeAssitant) or ...
 - `Night mode` switch can toggles night mode by applying different style, backlight or ... 
 
+### Photos
+
+![Result](/Photos/result.jpg "Result")
+![Back Side](/Photos/backside.jpg "Back Side")
+![Clock](/Photos/alone.jpg "Clock")
+
 ## 3D File
 
 The Manyfacturer has shared 3d STEP file for case.  You can even buy screen with already made Acrylic case. It was not suitable for me as I need it to be standing.  
@@ -499,10 +505,6 @@ I took it organized a bit (grouped properly) and modified (added holder) to be a
 ![3DView](/3Dprint/3Dview.png "View1")
 ![3DView](/3Dprint/3Dview2.png "View2")
 
-### Photos
-![Result](/Photos/result.jpg "Result")
-![Back Side](/Photos/backside.jpg "Back Side")
-![Clock](/Photos/alone.jpg "Clock")
 
 ## ToDo
 
